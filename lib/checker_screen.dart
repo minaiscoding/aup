@@ -21,7 +21,7 @@ class _CheckerScreenState extends State<CheckerScreen> {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('https://6eb3-34-67-16-225.ngrok-free.app/count_products'),
+      Uri.parse('https://59vl04wl-5000.uks1.devtunnels.ms/count_products'),
     );
     request.files.add(
       await http.MultipartFile.fromPath('image', widget.imagePath),

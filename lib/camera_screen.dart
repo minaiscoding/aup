@@ -24,6 +24,7 @@ class CameraScreenState extends State<CameraScreen> {
     final cameras = await availableCameras();
     _controller = CameraController(cameras[0], ResolutionPreset.medium);
     _initializeControllerFuture = _controller.initialize();
+
     setState(() {});
   }
 
@@ -63,7 +64,11 @@ class CameraScreenState extends State<CameraScreen> {
                   future: _initializeControllerFuture,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
-                      return CameraPreview(_controller);
+                      return RotatedBox(
+                        quarterTurns:
+                            1, // Change this value to rotate correctly
+                        child: CameraPreview(_controller),
+                      );
                     } else {
                       return const Center(
                         child: CircularProgressIndicator(color: Colors.orange),

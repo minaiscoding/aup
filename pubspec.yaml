@@ -38,9 +38,16 @@ dependencies:
   image_picker: ^1.1.2
   http: ^1.3.0
   google_fonts: ^6.2.1
+  
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.3
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/Vector.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
