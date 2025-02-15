@@ -1,7 +1,7 @@
-# My Flutter App
+# Demo Spot
 
 ## Overview
-This is the app proposed as a solution to optimise the process of merchendising by using computer vision to detect and count products on display
+This is the initial functioning prototype of the app proposed as a solution to optimise the process of merchendising by using computer vision to detect and count products on display
 
 ## Installation
 ### Prerequisites
@@ -13,7 +13,7 @@ This is the app proposed as a solution to optimise the process of merchendising 
 ### Setup
 1. Clone the repository:
    ```sh
-   git clone <your-repo-url>
+   git clone https://github.com/minaiscoding/aup/
    cd my_app
    ```
 2. Install dependencies:
