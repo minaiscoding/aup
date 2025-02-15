@@ -1,0 +1,9 @@
+POST https://96e4-34-106-18-171.ngrok-free.app/count_products
+Content-Type: multipart/form-data
+
+--boundary123
+Content-Disposition: form-data; name="image"; filename="your_image.jpg"
+Content-Type: image/jpeg
+
+< ./ramyRayon.jpg
+--boundary123--

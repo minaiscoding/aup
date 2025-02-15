@@ -18,14 +18,15 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => CameraScreen(),
         '/checker': (context) {
-          final imagePath = ModalRoute.of(context)!.settings.arguments as String;
+          final imagePath =
+              ModalRoute.of(context)!.settings.arguments as String;
           return CheckerScreen(imagePath: imagePath);
         },
         '/results': (context) {
-          final imagePath = ModalRoute.of(context)!.settings.arguments as String;
-          return ResultsScreen(imagePath: imagePath);
+          final imagePath =
+              ModalRoute.of(context)!.settings.arguments as String;
+          return ResultsScreen(imagePath: imagePath, results: {});
         },
-        
       },
     );
   }

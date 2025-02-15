@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -12,6 +12,7 @@ class CameraScreen extends StatefulWidget {
 class CameraScreenState extends State<CameraScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -26,6 +27,13 @@ class CameraScreenState extends State<CameraScreen> {
     setState(() {});
   }
 
+  Future<void> _pickImageFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null && mounted) {
+      Navigator.pushNamed(context, '/checker', arguments: pickedFile.path);
+    }
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -38,75 +46,82 @@ class CameraScreenState extends State<CameraScreen> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          SizedBox(height: 60), // Padding from top
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            height: 500, // Adjusted height for the camera preview
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(color: Colors.black26, blurRadius: 8),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: FutureBuilder<void>(
-                future: _initializeControllerFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return Transform.scale(
-                      scale: 1.1, // Fix aspect ratio issue
-                      child: CameraPreview(_controller),
-                    );
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(color: Colors.orange),
-                    );
-                  }
-                },
+          const SizedBox(height: 40),
+          Expanded(
+            flex: 8,
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: const [
+                  BoxShadow(color: Colors.black26, blurRadius: 8),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: FutureBuilder<void>(
+                  future: _initializeControllerFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return CameraPreview(_controller);
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(color: Colors.orange),
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           ),
-          Spacer(),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 8)],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.photo_library, size: 32, color: Colors.orange),
-                  onPressed: () {
-                    // Handle gallery upload
-                  },
-                ),
-                Container(
-                  height: 70,
-                  width: 70,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.orange, width: 4),
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 8)],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.photo_library,
+                      size: 32,
+                      color: Colors.orange,
+                    ),
+                    onPressed: _pickImageFromGallery,
                   ),
-                  child: IconButton(
-                    icon: Icon(Icons.camera_alt, size: 40, color: Colors.orange),
-                    onPressed: () async {
+                  GestureDetector(
+                    onTap: () async {
                       final image = await _controller.takePicture();
-                      Navigator.pushNamed(context, '/checker', arguments: image.path);
+                      if (!mounted) return;
+                      Navigator.pushNamed(
+                        context,
+                        '/checker',
+                        arguments: image.path,
+                      );
                     },
+                    child: Container(
+                      height: 70,
+                      width: 70,
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        shape: BoxShape.circle,
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black26, blurRadius: 8),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.camera_alt,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.check_circle, size: 32, color: Colors.green),
-                  onPressed: () {
-                    // Handle validation
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
