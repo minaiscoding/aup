@@ -65,8 +65,7 @@ class CameraScreenState extends State<CameraScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       return RotatedBox(
-                        quarterTurns:
-                            1, // Change this value to rotate correctly
+                        quarterTurns: 1,
                         child: CameraPreview(_controller),
                       );
                     } else {
